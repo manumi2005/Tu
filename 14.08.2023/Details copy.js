@@ -1,42 +1,45 @@
-// Function to add the entered data to the summary table
-function AddData() {
+// Function to store user details in local storage
+function storeUserDetails() {
+  // Get the values from the form
+  const fullName = document.getElementById("fullName").value;
+  const mobileNumber = document.getElementById("mobileNumber").value;
+  const email = document.getElementById("email").value;
+  const gender = document.getElementById("gender").value;
 
-  // Get the input values
-  var fullName = document.getElementById("fullName").value;
-  var mobileNumber = document.getElementById("mobileNumber").value;
-  var email = document.getElementById("email").value;
-  var gender = document.getElementById("gender").value;
-
-  document.getElementById("fullNameSummary").textContent = fullName;
-  document.getElementById("mobileNumberSummary").textContent = mobileNumber;
-  document.getElementById("emailSummary").textContent = email;
-  document.getElementById("genderSummary").textContent = gender;
-
-  // Store the data in local storage
-  var userDetails = {
+  // Create an object to store the user details
+  const userDetails = {
     fullName: fullName,
     mobileNumber: mobileNumber,
     email: email,
-    gender: gender,
+    gender: gender
   };
+
+  // Store the user details in local storage
   localStorage.setItem("userDetails", JSON.stringify(userDetails));
-
-  // Enable the continue button if the user details are complete
-  var continueBtn = document.getElementById("continueBtn");
-  continueBtn.disabled = !isUserDataComplete(userDetails);
 }
 
-// Function to check if user details are complete
-function isUserDataComplete(userDetails) {
-  return (
-    userDetails.fullName &&
-    userDetails.mobileNumber &&
-    userDetails.email &&
-    userDetails.gender
-  );
+// Function to load and display the stored user details
+function loadUserDetails() {
+  // Retrieve the user details from local storage
+  const storedUserDetails = localStorage.getItem("userDetails");
+
+  if (storedUserDetails) {
+    const userDetails = JSON.parse(storedUserDetails);
+    // Display the user details in the summary table
+    document.getElementById("fullNameSummary").textContent = userDetails.fullName;
+    document.getElementById("mobileNumberSummary").textContent = userDetails.mobileNumber;
+    document.getElementById("emailSummary").textContent = userDetails.email;
+    document.getElementById("genderSummary").textContent = userDetails.gender;
+  }
 }
 
+// Call the loadUserDetails function when the page loads
+window.onload = function () {
+  loadUserDetails();
+};
 
-
-
+// Call the storeUserDetails function when the "Add Data" button is clicked
+function AddData() {
+  storeUserDetails();
+}
 
